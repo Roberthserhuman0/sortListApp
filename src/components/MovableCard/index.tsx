@@ -1,4 +1,4 @@
-import Animated, { SharedValue } from "react-native-reanimated";
+import Animated, { SharedValue, runOnJS, useSharedValue } from "react-native-reanimated";
 import { Card, CardProps } from "../Card";
 import {GestureDetector, Gesture} from 'react-native-gesture-handler'
 import { useState } from "react";
@@ -12,17 +12,28 @@ type Props = {
 
 export function MovableCard({data}: Props){
     const [moving, setMoving] = useState(false);
+    const top = useSharedValue():
 
     const longPressGesture = Gesture
-    .LongPress()
-    .onStart(()=> {
-        setMoving(true);
+        .LongPress()
+        .onStart(()=> {
+            runOnJS(setMoving)(true);
+        })
+        .minDuration(200);
+
+    const panGesture = Gesture
+    .Pan()
+    .manualActivation(true)
+    .onTouchesDown((_,state) =>{
+        moving ? state.activate() : state.fail()
     })
-    .minDuration(200);
+    .onUpdate((event) => {
+
+    })
 
     return(
         <Animated.View>
-            <GestureDetector gesture={}>
+            <GestureDetector gesture={Gesture.Race(panGesture, longPressGesture)}>
                 <Card data={data}/>
             </GestureDetector>
         </Animated.View>
