@@ -7,7 +7,7 @@ import { MovableCard } from '../../components/MovableCard';
 import { Header } from '../../components/Header';
 
 import { styles } from './styles';
-import { event, useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
+import { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
 import { CARD_HEIGHT } from "../../components/Card";
 
 export function List() {
@@ -36,8 +36,8 @@ export function List() {
         <Animated.ScrollView
             style={styles.list}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle = {{ height: CARDS.length + CARD_HEIGHT}}
-            onScroll={handleScroll}
+            contentContainerStyle = {{ height: CARDS.length * CARD_HEIGHT}}
+            onScroll = {handleScroll}
             scrollEventThrottle={16}
         >
             {
